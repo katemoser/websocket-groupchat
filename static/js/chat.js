@@ -58,16 +58,19 @@ ws.onclose = function (evt) {
 
 $("form").submit(function (evt) {
   evt.preventDefault();
-  const text = $("#m").val();
+  const originalText = $("#m").val();
   let data;
-  if (text === "/joke") {
+  if (originalText === "/joke") {
     data = { type: "joke" };
-  } else if (text.startsWith("/priv")) {
-    const words = text.split(" ");
+  } else if (originalText.startsWith("/priv")) {
+    const words = originalText.split(" ");
     words.pop();
-    const name = words.pop();
-    const message = words.join(" ");
-
+    const nameTo = words.pop();
+    const text = words.join(" ");
+    const type = "private";
+    data = {
+      nameTo, nameFrom, text, type,
+    };
   }
   else {
     data = { type: "chat", text: $("#m").val() };

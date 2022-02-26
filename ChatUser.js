@@ -76,11 +76,11 @@ class ChatUser {
       result = await axios.get("https://icanhazdadjoke.com/",
         {
           headers: {
-            "User-Agent" : "katebot",
+            "User-Agent": "katebot",
             Accept: "application/json",
           }
         });
-    } catch (err){
+    } catch (err) {
       console.log("Oh no! Error: ", err);
     }
     console.log(result.data.joke);
@@ -92,6 +92,10 @@ class ChatUser {
         text: result.data.joke,
       }
     );
+  }
+
+  handlePM(text) {
+
   }
 
 
@@ -112,6 +116,7 @@ class ChatUser {
     if (msg.type === "join") this.handleJoin(msg.name);
     else if (msg.type === "chat") this.handleChat(msg.text);
     else if (msg.type === "joke") this.handleJoke();
+    else if (msg.type === "private") this.handlePM(msg);
     else throw new Error(`bad message: ${msg.type}`);
   }
 

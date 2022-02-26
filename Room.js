@@ -96,6 +96,7 @@ class Room {
     }
     toUser.send(JSON.stringify(data));
   }
+
 }
 
 module.exports = Room;
