@@ -30,6 +30,7 @@ class ChatUser {
    * */
 
   send(data) {
+    console.log(`${this.name} is sending: ${data}`)
     try {
       this._send(data);
     } catch {
@@ -57,27 +58,38 @@ class ChatUser {
    * */
 
   handleChat(text) {
-    if (text === "/joke") {
-      this.handleJoke();
-    }
-    else {
-      this.room.broadcast({
-        name: this.name,
-        type: "chat",
-        text: text,
-      });
-    }
+    this.room.broadcast({
+      name: this.name,
+      type: "chat",
+      text: text,
+    });
   }
 
-  handleJoke() {
+  /**
+   * Handle a joke : display only to self
+   * 
+   */
+  async handleJoke() {
     console.log("Handle joke");
-    const result = axios.get("https://icanhazdadjoke.com/");
+    let result;
+    try {
+      result = await axios.get("https://icanhazdadjoke.com/",
+        {
+          headers: {
+            "User-Agent" : "katebot",
+            Accept: "application/json",
+          }
+        });
+    } catch (err){
+      console.log("Oh no! Error: ", err);
+    }
+    console.log(result.data.joke);
 
     this.room.displayToSelf(
       {
         name: this.name,
         type: "chat",
-        text: result.joke,
+        text: result.data.joke,
       }
     );
   }
@@ -99,6 +111,7 @@ class ChatUser {
 
     if (msg.type === "join") this.handleJoin(msg.name);
     else if (msg.type === "chat") this.handleChat(msg.text);
+    else if (msg.type === "joke") this.handleJoke();
     else throw new Error(`bad message: ${msg.type}`);
   }
 
