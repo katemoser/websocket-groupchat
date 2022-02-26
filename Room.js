@@ -63,9 +63,27 @@ class Room {
    * */
 
   broadcast(data) {
+    console.log(data);
     for (let member of this.members) {
       member.send(JSON.stringify(data));
     }
+  }
+  /** Send data to current ChatUser only 
+   * 
+   * @param data { string } message to send
+  */
+
+  displayToSelf(data) {
+    console.log("disp[laying to self");
+    let currentUser;
+
+    for (let member of this.members) {
+      if (member.name === data.name) {
+        currentUser = member;
+      }
+    }
+    console.log("current user is ", currentUser);
+    currentUser.send(JSON.stringify(data));
   }
 }
 

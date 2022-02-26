@@ -1,5 +1,7 @@
 "use strict";
 
+const axios = require("axios");
+
 /** Functionality related to chatting. */
 
 // Room is an abstraction of a chat channel
@@ -55,12 +57,32 @@ class ChatUser {
    * */
 
   handleChat(text) {
-    this.room.broadcast({
-      name: this.name,
-      type: "chat",
-      text: text,
-    });
+    if (text === "/joke") {
+      this.handleJoke();
+    }
+    else {
+      this.room.broadcast({
+        name: this.name,
+        type: "chat",
+        text: text,
+      });
+    }
   }
+
+  handleJoke() {
+    console.log("Handle joke");
+    const result = axios.get("https://icanhazdadjoke.com/");
+
+    this.room.displayToSelf(
+      {
+        name: this.name,
+        type: "chat",
+        text: result.joke,
+      }
+    );
+  }
+
+
 
   /** Handle messages from client:
    *
