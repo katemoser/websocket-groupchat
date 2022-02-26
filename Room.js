@@ -85,6 +85,17 @@ class Room {
     console.log("current user is ", currentUser);
     currentUser.send(JSON.stringify(data));
   }
+
+  displayToAnotherUser(name, data) {
+    let toUser;
+
+    for (let member of this.members) {
+      if (member.name === name) {
+        toUser = member;
+      }
+    }
+    toUser.send(JSON.stringify(data));
+  }
 }
 
 module.exports = Room;

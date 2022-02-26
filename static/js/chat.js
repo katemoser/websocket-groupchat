@@ -60,9 +60,16 @@ $("form").submit(function (evt) {
   evt.preventDefault();
   const text = $("#m").val();
   let data;
-  if(text === "/joke"){
-    data = {type: "joke"};
-  } else{
+  if (text === "/joke") {
+    data = { type: "joke" };
+  } else if (text.startsWith("/priv")) {
+    const words = text.split(" ");
+    words.pop();
+    const name = words.pop();
+    const message = words.join(" ");
+
+  }
+  else {
     data = { type: "chat", text: $("#m").val() };
   }
 
